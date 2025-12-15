@@ -1,0 +1,79 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = "ap-south-1"
+        TF_IN_AUTOMATION = "true"
+    }
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/adityavaste/terraform-repo.git'
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                sh '''
+                terraform init \
+                  -input=false
+                '''
+            }
+        }
+
+        stage('Terraform Validate') {
+            steps {
+                sh 'terraform validate'
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                sh '''
+                terraform plan \
+                  -out=tfplan \
+                  -input=false
+                '''
+            }
+        }
+
+        stage('Approval') {
+            when {
+                branch 'main'
+            }
+            steps {
+                input message: "Approve Terraform Apply?"
+            }
+        }
+
+        stage('Terraform Apply') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh '''
+                terraform apply \
+                  -input=false \
+                  tfplan
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Terraform pipeline completed successfully"
+        }
+        failure {
+            echo "Terraform pipeline failed"
+        }
+    }
+}
