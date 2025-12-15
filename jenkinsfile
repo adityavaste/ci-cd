@@ -17,6 +17,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/adityavaste/terraform-repo.git'
+                    credentialsId: 'ffd6e622-84cf-4651-869e-f4b164555f38'
             }
         }
 
