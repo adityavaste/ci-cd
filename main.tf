@@ -1,6 +1,6 @@
 module "eks-cluster" {
   source  = "https://github.com/adityavaste/eks_module.git?ref=dev"
-  version = "v1"
+  
 
 
   deployHub_vpc_cidr_block         = "10.0.0.0/16"
