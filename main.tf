@@ -1,5 +1,5 @@
 module "eks-cluster" {
-  source  = "https://github.com/adityavaste/eks_module.git?ref=dev"
+  source  = "git::https://github.com/adityavaste/eks_module.git?ref=dev"
   
 
 
