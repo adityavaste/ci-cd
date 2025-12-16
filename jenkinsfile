@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout Terraform Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/your-org/terraform-infra.git'
+                    url: 'https://github.com/adityavaste/ci-cd.git'
             }
         }
 
