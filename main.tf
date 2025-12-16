@@ -4,9 +4,9 @@ module "eks-cluster" {
 
 
   deployHub_vpc_cidr_block         = "10.0.0.0/16"
-  public_subnet_cide_block         = "10.0.1.0/24"
+  public_subnet_cidr_block         = "10.0.1.0/24"
   public_subnet_availability_zone  = "ap-south-1a"
-  private_subnet_cide_block        = "10.0.2.0/24"
+  private_subnet_cidr_block        = "10.0.2.0/24"
   private_subnet_availability_zone = "ap-south-1b"
   aws_instance_ami                 = "ami-00ca570c1b6d79f36"
   aws_instance_type                = "t2.micro"
