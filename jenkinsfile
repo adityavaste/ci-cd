@@ -2,29 +2,27 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = "ap-south-1"
-        TF_IN_AUTOMATION = "true"
+        AWS_DEFAULT_REGION = "ap-south-1"
+        TF_IN_AUTOMATION   = "true"
     }
 
     options {
-        timestamps()
-        disableConcurrentBuilds()
+        timeout(time: 30, unit: 'MINUTES')
     }
 
     stages {
 
-        stage('Checkout Code') {
+        stage('Checkout Terraform Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/adityavaste/ci-cd.git',
-                    credentialsId: 'ffd6e622-84cf-4651-869e-f4b164555f38'
+                    url: 'https://github.com/your-org/terraform-infra.git'
             }
         }
 
         stage('Terraform Init') {
             steps {
                 sh '''
-                terraform init \
+                  terraform init \
                   -input=false
                 '''
             }
@@ -39,29 +37,18 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 sh '''
-                terraform plan \
+                  terraform plan \
                   -out=tfplan \
                   -input=false
                 '''
             }
         }
 
-        stage('Approval') {
-            when {
-                branch 'main'
-            }
+        stage('Terraform Apply') {
             steps {
                 input message: "Approve Terraform Apply?"
-            }
-        }
-
-        stage('Terraform Apply') {
-            when {
-                branch 'main'
-            }
-            steps {
                 sh '''
-                terraform apply \
+                  terraform apply \
                   -input=false \
                   tfplan
                 '''
@@ -71,10 +58,13 @@ pipeline {
 
     post {
         success {
-            echo "Terraform pipeline completed successfully"
+            echo "Terraform deployment successful"
         }
         failure {
-            echo "Terraform pipeline failed"
+            echo "Terraform deployment failed"
+        }
+        always {
+            sh 'terraform --version'
         }
     }
 }
