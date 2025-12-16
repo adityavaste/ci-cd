@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh '''
                   terraform init \
-                  -input=false \ 
+                  -input=false \
                   -upgrade
                 '''
             }
