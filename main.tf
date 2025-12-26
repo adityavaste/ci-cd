@@ -11,5 +11,5 @@ module "eks-cluster" {
   aws_instance_ami                 = "ami-00ca570c1b6d79f36"
   aws_instance_type                = "t2.micro"
   aws_instance_key_pair            = "12-dec"
-
+  ami_type                         = "ami-00ca570c1b6d79f36"
 }
